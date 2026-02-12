@@ -1,23 +1,18 @@
 import { useState } from "react";
 import "../App.css";
 import { Link } from "react-router-dom";
+import { api } from "../api/api";
 
 export default function Notes() {
   const [topic, setTopic] = useState("");
-  const [result, setResult] = useState("");
+  const [conspectName, setConspectName] = useState<string>("");
+  const [result, setResult] = useState<string>("");
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (topic.trim().length < 3) {
       alert("Temat musi mieć co najmniej 3 znaki");
       return;
     }
-
-    const generatedText =
-      `Konspekt dla tematu: ${topic}\n\n` +
-      `1. Wprowadzenie\n2. Definicja pojęcia\n3. Główne zagadnienia\n4. Przykłady\n5. Podsumowanie`;
-
-    setResult(generatedText);
-
     const existingHistory = JSON.parse(localStorage.getItem("history") || "[]");
 
     const newEntry = {
@@ -30,6 +25,9 @@ export default function Notes() {
       "history",
       JSON.stringify([newEntry, ...existingHistory])
     );
+    const aiResponse = await api.aiRequest(topic, conspectName);
+    console.log(aiResponse);
+    setResult(aiResponse.data);
   };
 
   return (
@@ -43,6 +41,13 @@ export default function Notes() {
 
       <div className="card">
         <h1 className="title">Generator konspektów</h1>
+
+        <input
+          type="text"
+          placeholder="Wpisz nazwę konspectu"
+          value={conspectName}
+          onChange={(e) => setConspectName(e.target.value)}
+        />
 
         <input
           type="text"

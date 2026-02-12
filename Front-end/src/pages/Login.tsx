@@ -35,8 +35,11 @@ export default function Login() {
 
     } else {
       const userData = await api.login(username, password);
-      localStorage.setItem('jwt', userData.data.access_token);
-      localStorage.setItem('userId', userData.data.userId);
+      if (userData) {
+        localStorage.setItem('jwt', userData.data.access_token);
+        localStorage.setItem('userId', userData.data.userId);
+        navigate('/home');
+      }
     }
 
   } catch (error) {
