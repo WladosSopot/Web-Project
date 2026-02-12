@@ -23,6 +23,7 @@ apiInstance.interceptors.request.use((config) => {
 export const api = {
   login: (username: string, password: string) => {
     return apiInstance.post<ILogin>("/auth/login", {
+
       username: username,
       password: password,
     });

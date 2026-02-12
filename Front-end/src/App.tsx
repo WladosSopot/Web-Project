@@ -4,9 +4,10 @@ import viteLogo from '/vite.svg'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import './App.css'
+import Notes from "./pages/Notes";
 
 function Home() {
-  return <h1>Strona główna</h1>;
+  return <Notes />;
 }
 
 export default function App() {
