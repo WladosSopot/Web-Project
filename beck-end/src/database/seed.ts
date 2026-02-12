@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
-import { AppDataSource } from './data-source.js';
-import { User } from '../user/user.entity.js';
+import { AppDataSource } from './data-source';
+import { User } from '../user/user.entity';
 
 async function seed() {
   await AppDataSource.initialize();

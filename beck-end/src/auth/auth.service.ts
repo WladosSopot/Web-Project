@@ -68,8 +68,11 @@ export class AuthService {
     return { access_token: this.jwtService.sign(data) };
   }
 
-  async virifyToken(token: string) {
+  async virifyToken(token: string, userId: number) {
     const payload = this.jwtService.verify(token);
-    console.log(payload);
+    if (payload && Number(userId) === payload.sub) {
+      return true;
+    }
+    throw new UnauthorizedException('Invalid token');
   }
 }

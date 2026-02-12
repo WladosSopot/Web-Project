@@ -1,30 +1,19 @@
 import { useState } from "react";
 import "../App.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 
 export default function Notes() {
   const [topic, setTopic] = useState("");
   const [conspectName, setConspectName] = useState<string>("");
   const [result, setResult] = useState<string>("");
+  const navigate = useNavigate();   
 
   const handleGenerate = async () => {
     if (topic.trim().length < 3) {
       alert("Temat musi mieć co najmniej 3 znaki");
       return;
     }
-    const existingHistory = JSON.parse(localStorage.getItem("history") || "[]");
-
-    const newEntry = {
-      topic,
-      result: generatedText,
-      date: new Date().toLocaleString()
-    };
-
-    localStorage.setItem(
-      "history",
-      JSON.stringify([newEntry, ...existingHistory])
-    );
     const aiResponse = await api.aiRequest(topic, conspectName);
     console.log(aiResponse);
     setResult(aiResponse.data);
@@ -32,12 +21,21 @@ export default function Notes() {
 
   return (
     <div className="container">
-      <Link
-        to="/history"
+      <button
+        onClick={() => navigate('/history')}
         style={{ position: "absolute", top: "20px", left: "20px" }}
       >
         Historia
-      </Link>
+      </button>
+      <button
+        onClick={() => {
+          localStorage.clear();
+          navigate('/')
+        }}
+        style={{ position: "absolute", top: "20px", left: "140px" }}
+      >
+        Logout
+      </button>
 
       <div className="card">
         <h1 className="title">Generator konspektów</h1>

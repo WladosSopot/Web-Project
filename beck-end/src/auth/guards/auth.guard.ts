@@ -18,16 +18,20 @@ export class AuthGuard implements CanActivate {
   }
 
   async validateRequest(request) {
-    console.log(request);
-    const tokenHeader = request.headers['Authorization'];
-    // if (!tokenHeader) {
-    //   throw new UnauthorizedException('Token missing');
-    // }
+    const tokenHeader = request.headers['authorization'];
+    const userId = request.headers['userid'];
+    if (!tokenHeader) {
+      throw new UnauthorizedException('Token missing');
+    }
     const [bearer, token] = tokenHeader.split(' ');
-    // if (bearer !== 'Bearer' || !token) {
-    //   throw new UnauthorizedException('Invalid token format');
-    // }
-    this.authService.virifyToken(token);
-    return true;
+    if (bearer !== 'Bearer' || !token) {
+      throw new UnauthorizedException('Invalid token format');
+    }
+    const isValid = await this.authService.virifyToken(token, userId);
+    if (isValid) {
+      request.user = { id: userId };
+      return true;
+    }
+    return false;
   }
 }

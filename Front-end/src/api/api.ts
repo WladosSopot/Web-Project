@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { ILogin } from "./interfaces/ILogin";
+import type { HistoryItem } from "./interfaces/IHistoeyItem";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -40,5 +41,13 @@ export const api = {
       userPrompt,
       conspectName,
     });
+  },
+
+  gellAllUserHistory: () => {
+    return apiInstance.get<HistoryItem[]>("/history", {});
+  },
+
+  deleteHistoryItem: (id: number) => {
+    return apiInstance.delete(`/history/${id}`);
   },
 };
