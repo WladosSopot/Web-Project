@@ -34,7 +34,9 @@ export default function Login() {
       setIsRegister(false);
 
     } else {
-      await api.login(username, password);
+      const userData = await api.login(username, password);
+      localStorage.setItem('jwt', userData.data.access_token);
+      localStorage.setItem('userId', userData.data.userId);
     }
 
   } catch (error) {
@@ -42,7 +44,6 @@ export default function Login() {
     console.error(error);
   }
 };
-
 
   return (
     <div className="container">
