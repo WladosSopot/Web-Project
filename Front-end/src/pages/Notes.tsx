@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../App.css";
+import { Link } from "react-router-dom";
 
 export default function Notes() {
   const [topic, setTopic] = useState("");
@@ -11,13 +12,35 @@ export default function Notes() {
       return;
     }
 
-    setResult(
-      `Konspekt dla tematu: ${topic}\n\n1. Wprowadzenie\n2. Definicja pojęcia\n3. Główne zagadnienia\n4. Przykłady\n5. Podsumowanie`
+    const generatedText =
+      `Konspekt dla tematu: ${topic}\n\n` +
+      `1. Wprowadzenie\n2. Definicja pojęcia\n3. Główne zagadnienia\n4. Przykłady\n5. Podsumowanie`;
+
+    setResult(generatedText);
+
+    const existingHistory = JSON.parse(localStorage.getItem("history") || "[]");
+
+    const newEntry = {
+      topic,
+      result: generatedText,
+      date: new Date().toLocaleString()
+    };
+
+    localStorage.setItem(
+      "history",
+      JSON.stringify([newEntry, ...existingHistory])
     );
   };
 
   return (
     <div className="container">
+      <Link
+        to="/history"
+        style={{ position: "absolute", top: "20px", left: "20px" }}
+      >
+        Historia
+      </Link>
+
       <div className="card">
         <h1 className="title">Generator konspektów</h1>
 
@@ -33,7 +56,10 @@ export default function Notes() {
         </button>
 
         {result && (
-          <div className="result" style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
+          <div
+            className="result"
+            style={{ marginTop: "20px", whiteSpace: "pre-line" }}
+          >
             {result}
           </div>
         )}

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import './App.css'
 import Notes from "./pages/Notes";
+import History from "./pages/History";
 
 function Home() {
   return <Notes />;
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/history" element={<History />} />
       </Routes>
     </BrowserRouter>
   );
