@@ -1,11 +1,38 @@
 import axios from "axios";
+import type { ILogin } from "./interfaces/ILogin";
 
-export const baseUrl = import.meta.env.VITE_API_URL;
+const baseURL = import.meta.env.VITE_API_URL;
 
-const $api = axios.create({ baseURL: baseUrl });
+const apiInstance = axios.create({
+  baseURL: baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+apiInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('jwt');
+  const userId = localStorage.getItem('userId');
+  if(token && userId) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+    config.headers['userId'] = userId;
+  }
+  return config;
+})
 
 export const api = {
-    login: () =>
-        $api.post()
-    
+  login: (username: string, password: string) => {
+    return apiInstance.post<ILogin>("/auth/login", {
+
+      username: username,
+      password: password,
+    });
+  },
+
+  register: (username: string, password: string) => {
+    return apiInstance.post("/auth/register", {
+      username: username,
+      password: password,
+    });
+  },
 };

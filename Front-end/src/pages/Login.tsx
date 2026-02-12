@@ -1,50 +1,49 @@
 import { useState } from "react";
 import "../App.css";
+import { api } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isRegister, setIsRegister] = useState(true);
+  const navigate = useNavigate();   
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (username.trim().length < 5) {
-      alert("Nazwa użytkownika musi mieć minimum 5 znaków");
-      return;
-    }
+  if (username.trim().length < 5) {
+    alert("Nazwa użytkownika musi mieć minimum 5 znaków");
+    return;
+  }
 
-    if (password.length < 6) {
-      alert("Hasło musi mieć minimum 6 znaków");
-      return;
-    }
+  if (password.length < 8) {
+    alert("Hasło musi mieć minimum 8 znaków");
+    return;
+  }
 
+  try {
     if (isRegister) {
       if (password !== confirmPassword) {
-        alert("Hasła nie są takie same");
         return;
       }
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ username, password })
-      );
+      const result = await api.register(username, password);
+      console.log(result)
+      setIsRegister(false);
 
-      alert("Rejestracja zakończona pomyślnie");
     } else {
-      const savedUser = JSON.parse(localStorage.getItem("user") || "{}");
-
-      if (
-        username === savedUser.username &&
-        password === savedUser.password
-      ) {
-        alert("Zalogowano pomyślnie");
-      } else {
-        alert("Błędny login lub hasło");
-      }
+      const userData = await api.login(username, password);
+      localStorage.setItem('jwt', userData.data.access_token);
+      localStorage.setItem('userId', userData.data.userId);
     }
-  };
+
+  } catch (error) {
+    alert("Błąd połączenia z serwerem");
+    console.error(error);
+  }
+};
 
   return (
     <div className="container">
