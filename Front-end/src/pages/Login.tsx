@@ -18,26 +18,23 @@ export default function Login() {
     return;
   }
 
-  if (password.length < 6) {
-    alert("Hasło musi mieć minimum 6 znaków");
+  if (password.length < 8) {
+    alert("Hasło musi mieć minimum 8 znaków");
     return;
   }
 
   try {
     if (isRegister) {
       if (password !== confirmPassword) {
-        alert("Hasła nie są takie same");
         return;
       }
 
       const result = await api.register(username, password);
       console.log(result)
-      alert("Rejestracja zakończona pomyślnie");
       setIsRegister(false);
 
     } else {
       await api.login(username, password);
-      alert("Zalogowano pomyślnie");
     }
 
   } catch (error) {

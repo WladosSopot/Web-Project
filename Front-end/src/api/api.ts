@@ -11,14 +11,14 @@ const apiInstance = axios.create({
 
 export const api = {
   login: (username: string, password: string) => {
-    return apiInstance.post("/user", {
+    return apiInstance.post("/auth/login", {
       username: username,
       password: password,
     });
   },
 
   register: (username: string, password: string) => {
-    return apiInstance.post("/user", {
+    return apiInstance.post("/auth/register", {
       username: username,
       password: password,
     });
