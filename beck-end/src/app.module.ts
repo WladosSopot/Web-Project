@@ -3,14 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module.js';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import path, { join } from 'path';
 import { AuthModule } from './auth/auth.module.js';
 import { AiModule } from './aiModule/ai.module.js';
-import { ConfigModule } from '@nestjs/config';
-import { join } from 'path';
+import { HistoryModule } from './history/history.module';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __dirname = path.resolve();
 
 @Module({
   imports: [

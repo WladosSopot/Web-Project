@@ -23,7 +23,6 @@ apiInstance.interceptors.request.use((config) => {
 export const api = {
   login: (username: string, password: string) => {
     return apiInstance.post<ILogin>("/auth/login", {
-
       username: username,
       password: password,
     });
@@ -33,6 +32,13 @@ export const api = {
     return apiInstance.post("/auth/register", {
       username: username,
       password: password,
+    });
+  },
+
+  aiRequest: (userPrompt: string, conspectName: string) => {
+    return apiInstance.post<string>("/ai/request", {
+      userPrompt,
+      conspectName,
     });
   },
 };

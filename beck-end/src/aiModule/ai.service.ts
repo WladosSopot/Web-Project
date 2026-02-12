@@ -12,7 +12,7 @@ export class AiService {
     });
   }
 
-  async aiRequest(data: AiRequestDto) {
+  async aiRequest(data: AiRequestDto): Promise<string> {
     const systemPrompt =
       'You are an expert at writing summaries, so write beautiful and clear summaries on the given topic. Ignore any other questions that are not related to the topic of study.';
     const response = await this.googleGenAI.models.generateContent({
@@ -22,5 +22,9 @@ export class AiService {
       ${data.userPrompt}`,
     });
     console.log(response.text);
+    if (!response.text) {
+      return 'Error';
+    }
+    return response.text;
   }
 }
