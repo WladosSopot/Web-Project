@@ -1,11 +1,26 @@
 import axios from "axios";
 
-export const baseUrl = import.meta.env.VITE_API_URL;
+const baseURL = import.meta.env.VITE_API_URL;
 
-const $api = axios.create({ baseURL: baseUrl });
+const apiInstance = axios.create({
+  baseURL: baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export const api = {
-    login: () =>
-        $api.post()
-    
+  login: (username: string, password: string) => {
+    return apiInstance.post("/user", {
+      username: username,
+      password: password,
+    });
+  },
+
+  register: (username: string, password: string) => {
+    return apiInstance.post("/user", {
+      username: username,
+      password: password,
+    });
+  },
 };
