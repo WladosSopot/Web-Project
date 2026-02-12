@@ -8,11 +8,7 @@ Dostęp do chronionych endpointów jest zabezpieczony przy użyciu:
 - Nagłówka: `Authorization: Bearer <token>`
 - Guard w NestJS: `@UseGuards(AuthGuard)`
 
-Token jest zwracany po poprawnym zalogowaniu i musi być dołączany do każdego chronionego zapytania.
-
-### 💾 Przechowywanie tokena na froncie
-
-Token JWT po zalogowaniu jest przechowywany na froncie w **localStorage** lub **sessionStorage**:
+Token JWT po zalogowaniu jest przechowywany na froncie w **localStorage**:
 
 ```ts
 // zapis tokena
@@ -23,9 +19,37 @@ const token = localStorage.getItem('jwt');
 ```
 
 ✅ Zalecenia bezpieczeństwa:
-- Nigdy nie przechowuj w nim wrażliwych danych (np. hasła)
+- Nigdy nie przechowuj w nim wrażliwych danych (np. haseł)
 - Stosuj **HTTPS**, aby chronić token w transmisji
 - W razie potrzeby można używać **HttpOnly cookies** dla większego bezpieczeństwa
+
+---
+
+## 💾 Baza danych
+
+Projekt używa **SQLite** jako bazy danych.  
+Dla migracji i zarządzania schematem tabel używamy **TypeORM** w NestJS.
+
+### Jak zrobić migracje
+
+1. Najpierw wykonaj build backendu:
+
+```bash
+cd back-end
+yarn build
+```
+
+2. Następnie uruchom migracje:
+
+```bash
+# tworzenie nowej migracji
+yarn typeorm migration:generate src/migrations/NazwaMigracji
+
+# uruchomienie migracji
+yarn migration:run
+```
+
+Po uruchomieniu migracji plik `dev.sqlite` zostanie zaktualizowany i wszystkie zmiany w schemacie będą gotowe.
 
 ---
 
@@ -84,7 +108,7 @@ Zwraca:
 
 ### 1. Przejdź do katalogu backend
 ```bash
-cd beck-end
+cd back-end
 ```
 
 ### 2. Zainstaluj zależności
@@ -92,7 +116,17 @@ cd beck-end
 yarn install
 ```
 
-### 3. Uruchom serwer w trybie developerskim
+### 3. Zbuduj backend przed migracjami
+```bash
+yarn build
+```
+
+### 4. Uruchom migracje (SQLite)
+```bash
+yarn typeorm migration:run
+```
+
+### 5. Uruchom serwer w trybie developerskim
 ```bash
 yarn start:dev
 ```
@@ -108,7 +142,7 @@ http://localhost:3000
 
 ### 1. Przejdź do katalogu frontend
 ```bash
-cd Front-end
+cd front-end
 ```
 
 ### 2. Zainstaluj zależności
