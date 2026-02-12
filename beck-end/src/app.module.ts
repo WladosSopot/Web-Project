@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module.js';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { AuthModule } from './auth/auth.module.js';
+import { AiModule } from './aiModule/ai.module.js';
+import { ConfigModule } from '@nestjs/config';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -17,6 +20,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
       entities: [join(__dirname, '**/*.entity.{ts,js}')],
     }),
     UserModule,
+    AuthModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],

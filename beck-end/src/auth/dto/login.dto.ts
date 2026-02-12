@@ -1,9 +1,11 @@
-import {  IsString } from "class-validator";
+import { IsString } from 'class-validator';
 
-export class LoginDto{
-    @IsString()
-    username: string
+export class LoginDto {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  @IsString()
+  username: string;
 
-    @IsString()
-    password: string
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  @IsString()
+  password: string;
 }
